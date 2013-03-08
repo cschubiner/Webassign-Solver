@@ -15,7 +15,7 @@ namespace Webassign_Solver
 
         public practiceproblems()
         {
-            constants = new double[40];
+            constants = new double[44];
         }
     }
 }

@@ -6,6 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.IO;
+using Microsoft.Win32;
 
 namespace Webassign_Solver
 {
@@ -78,7 +81,7 @@ namespace Webassign_Solver
 
             foreach (practiceproblems problem in problems)
             { //edit here! and edit practiceproblem.cs's constants = new double[NUMBER];//NUMBER=numofequations;
-                numofequations = 1 + 39;
+                numofequations = 1 + 43;
                 problem.constants[0] = problem.answer / (problem.A * problem.B * problem.C);
                 problem.constants[1] = problem.answer / (problem.A + problem.B + problem.C);
                 problem.constants[2] = problem.answer / ((problem.A * problem.B / problem.C));
@@ -118,7 +121,11 @@ namespace Webassign_Solver
                 problem.constants[36] = problem.answer / ((problem.A * problem.A / problem.B));
                 problem.constants[37] = problem.answer / ((problem.A * problem.A / problem.B));
                 problem.constants[38] = problem.answer / ((problem.A * problem.A / (problem.B*problem.C)));
-                problem.constants[39] = problem.answer / ((problem.A * problem.A *problem.B/ problem.C));
+                problem.constants[39] = problem.answer / ((problem.A * problem.A * problem.B / problem.C));
+                problem.constants[40] = problem.answer / ((problem.B - problem.A) * (problem.C / 2) + problem.A * problem.C);
+                problem.constants[41] = problem.answer / ((problem.B - problem.A) * (problem.C) + problem.A * problem.C);
+                problem.constants[42] = problem.answer / ((problem.B - problem.A) * (problem.C / 2) + problem.A * problem.B);
+                problem.constants[43] = problem.answer / ((problem.B - problem.A) * (problem.C / 2) + problem.B * problem.C);
             }
         }
 
@@ -205,6 +212,25 @@ namespace Webassign_Solver
         private void textBoxA_DragDrop(object sender, DragEventArgs e)
         {
             textBoxA.Text=e.Data.ToString();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+          //  System.Diagnostics.Process.Start("https://github.com/cschubiner/Webassign-Solver");
+            OpenURL("https://github.com/cschubiner/Webassign-Solver");
+        }
+
+        private void OpenURL(string url)
+        {
+            string key = @"htmlfile\shell\open\command";
+            RegistryKey registryKey = Registry.ClassesRoot.OpenSubKey(key, false);
+            // Get the default browser path on the system
+            string Default_Browser_Path = ((string)registryKey.GetValue(null, null)).Split('"')[1];
+
+            Process p = new Process();
+            p.StartInfo.FileName = Default_Browser_Path;
+            p.StartInfo.Arguments = url;
+            p.Start();
         }
     }
 }
